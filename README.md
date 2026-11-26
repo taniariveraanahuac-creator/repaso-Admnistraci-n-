@@ -20,11 +20,11 @@ Página publicada: https://taniariveraanahuac-creator.github.io/repaso-Admnistra
 
 Agrega al final de la dirección:
 
-- `#comprender` · Fundamentos (administración, escuelas, P-O-D-C, SMART, estructuras, dirigir, controlar)
-- `#clasificar` · La empresa hoy (clasificación de empresas, tamaño en México, tendencias del siglo XXI)
+- `#comprender` · Fundamentos (administración, escuelas, P-O-D-C, metas SMART y SMART paso a paso, estructuras, dirigir, controlar)
+- `#clasificar` · La empresa hoy (clasificación de empresas, tipos de sociedades, tamaño en México, tendencias del siglo XXI)
 - `#entorno` · El entorno (PESTEL, 5 fuerzas de Porter)
-- `#estrategia` · La estrategia (cadena de valor, niveles de estrategia, estrategias genéricas de Porter, matriz BCG, Modelo Canvas, tipos de modelo de negocio)
-- `#resolver` · Resolver y medir (Ishikawa, ruta crítica, KPI)
+- `#estrategia` · La estrategia (cadena de valor, niveles de estrategia, estrategias genéricas de Porter, matriz BCG y BCG paso a paso, Modelo Canvas y Canvas bloque por bloque, tipos de modelo de negocio)
+- `#resolver` · Resolver y medir (Ishikawa, ruta crítica, KPI desde cero, KPI qué es, cómo se construye y ejemplos resueltos)
 - `#integrar` · Método del caso, proyecto integrador y antes del examen
 
 ## Notas
