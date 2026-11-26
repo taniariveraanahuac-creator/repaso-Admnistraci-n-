@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Repaso final ADM1401</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: guía "para dummies": amable, clara, muy visual; define y explica, sin preguntas.
+   IDEA: un mapa de ruta del curso con 5 estaciones, como un mapa de metro.
+   PICTURE: la línea de ruta grande; en cada tema, un diagrama propio (ciclo, pirámide, espina, red, cadena).
+   COLOUR and TYPE: naranja Anáhuac dominante, teal de apoyo, amarillo de acento; Figtree.
+   LAYOUT: banda naranja con la ruta; tarjeta de definición, diagrama grande y explicación lado a lado. */
+:root{color-scheme:light dark;
+--bg:light-dark(#fffaf5,#16110d);--card:light-dark(#ffffff,#221a14);--ink:light-dark(#1d1a17,#f5efe9);--mute:light-dark(#6b625a,#b5aaa0);
+--line:light-dark(#efe4d9,#3a2e25);--or:#f25c05;--orS:light-dark(#fff0e6,#3a2213);--te:light-dark(#0e6a78,#5cc3cf);--teS:light-dark(#e4f4f6,#13303a);
+--ye:#ffc93c;--yeS:light-dark(#fff6d6,#3a3014)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Figtree,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3{line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,5vw,52px);font-weight:800}
+h2{font-size:clamp(26px,3.4vw,36px);font-weight:800}
+h3{font-size:20px;font-weight:800}
+.hero{background:var(--or);color:#fff}
+.hero p{margin:10px 0 0;max-width:62ch;font-size:17px}
+.meta{font-size:14px;margin:0 0 10px}
+.funcs{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.funcs span{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);border-radius:99px;padding:7px 14px 7px 10px;font-weight:600;font-size:15px}
+.icn{flex:none;vertical-align:middle}
+.tabs button{display:inline-flex;align-items:center;gap:7px}
+.chips button{display:inline-flex;align-items:center;gap:6px}
+.route{margin-top:24px}.route svg{width:100%;height:auto;display:block}
+.stn{cursor:pointer}.stn circle{fill:#fff;stroke:#1d1a17;stroke-width:6}
+.stn.on circle{fill:var(--ye)}
+.stn text{fill:#fff;font:800 22px Figtree,sans-serif}.stn text.s{font:600 16px Figtree,sans-serif}
+.stn:focus{outline:none}.stn:focus-visible circle{stroke:#fff;stroke-width:9}
+.chips{display:none;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chips button{background:#fff;color:#1d1a17;border:0;border-radius:99px;padding:10px 16px;font:800 15px Figtree,system-ui,sans-serif;min-height:44px;cursor:pointer}
+.chips button.on{background:var(--ye)}
+@media(max-width:700px){.route svg{display:none}.chips{display:flex}}
+.st-head{display:flex;gap:16px;align-items:center}
+.num{width:56px;height:56px;border-radius:50%;background:var(--or);color:#fff;display:grid;place-items:center;font:800 26px Figtree,system-ui,sans-serif;flex:none}
+.goal{color:var(--mute);margin:4px 0 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}
+.tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:9px 14px;font:600 15px Figtree,system-ui,sans-serif;min-height:44px;cursor:pointer}
+.tabs button.on{border-color:var(--te);background:var(--teS);color:var(--te);font-weight:800}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--te);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,32px)}
+.def{background:var(--or);color:#fff;border-radius:18px;padding:18px 22px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
+.def .ic{width:46px;height:46px;border-radius:50%;background:#fff;color:var(--or);display:grid;place-items:center;font:800 22px Figtree,system-ui,sans-serif}
+.def small{display:block;font-weight:600;font-size:14px}
+.def p{margin:2px 0 0;font-size:19px;font-weight:800;line-height:1.35}
+.body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);margin-top:22px;align-items:start}
+@media(max-width:860px){.body{grid-template-columns:1fr}}
+.vis svg{width:100%;height:auto;display:block}
+.exp h4{margin:0 0 6px;font-size:15px;color:var(--te)}
+.exp p{margin:0 0 14px}
+.exp ul{margin:0 0 14px;padding-left:20px}.exp li{margin-bottom:6px}
+.ex{border-radius:14px;padding:14px 16px;background:var(--teS);margin-bottom:12px}
+.tip{border-radius:14px;padding:14px 16px;background:var(--yeS)}
+.ex b,.tip b{display:block;font-size:14px;color:var(--te);margin-bottom:2px}.tip b{color:var(--or)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.box{border-radius:16px;padding:14px;background:var(--orS)}.box.t{background:var(--teS)}.box.y{background:var(--yeS)}
+.box b{display:block;font-size:16px;margin-bottom:2px}.box small{color:var(--mute);display:block;margin-top:4px;font-size:14px}
+.big{font:800 30px Figtree,system-ui,sans-serif;color:var(--or);line-height:1;display:block;margin-bottom:4px}
+/* svg paints */
+.fo{fill:var(--or)}.ft{fill:var(--te)}.fy{fill:var(--ye)}.fos{fill:var(--orS)}.fts{fill:var(--teS)}.fys{fill:var(--yeS)}.fc{fill:var(--card)}.fl{fill:var(--line)}
+.so{stroke:var(--or)}.st{stroke:var(--te)}.si{stroke:var(--ink)}.sl{stroke:var(--line)}
+.tx{fill:var(--ink);font:600 15px Figtree,sans-serif}.tb{fill:var(--ink);font:800 16px Figtree,sans-serif}.tw{fill:#fff;font:800 16px Figtree,sans-serif}.tk{fill:#1d1a17;font:800 16px Figtree,sans-serif}
+.tm{fill:var(--mute);font:600 13px Figtree,sans-serif}
+.spec{display:grid;gap:14px}
+.spec div{display:grid;grid-template-columns:7.5em minmax(0,1fr) 7.5em;gap:10px;align-items:center;font-weight:600;font-size:15px}
+.spec div span:last-child{text-align:right}
+.spec i{height:12px;border-radius:99px;background:linear-gradient(90deg,var(--teS),var(--orS));position:relative;display:block}
+.spec i::after{content:"";position:absolute;top:50%;left:var(--p);width:22px;height:22px;border-radius:50%;background:var(--or);border:3px solid var(--card);transform:translate(-50%,-50%)}
+.out{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--teS)}
+.forces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
+.forces div{border-radius:14px;padding:12px 8px;background:var(--teS);font-size:14px}
+.forces div b{display:block;font-size:15px}
+.forces .c{background:var(--or);color:#fff}.forces .e{background:none;display:grid;place-items:center;font:800 22px Figtree,system-ui,sans-serif;color:var(--mute);padding:0}
+.force{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) 28px;gap:10px;align-items:center}
+.force span.v{font-weight:800;text-align:right}
+input[type=range]{width:100%;accent-color:var(--or);height:40px}
+.meter{height:16px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:10px}
+.meter i{display:block;height:100%;background:var(--or);transition:width .3s}
+.ctl{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-top:14px}
+.ctl label{display:grid;gap:4px;font-weight:600;font-size:14px}
+select,input[type=number]{font:16px Figtree,system-ui,sans-serif;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-height:44px}
+.bars{display:grid;gap:10px}
+.bars .row{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:10px;align-items:center;font-size:14px;font-weight:600}
+.bars .row div{display:grid;gap:3px}
+.bars span{display:block;height:16px;border-radius:6px;color:#1d1a17;font-size:12px;line-height:16px;padding-left:6px;white-space:nowrap}
+.canvas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.canvas div{border-radius:12px;padding:10px;background:var(--teS);font-size:13px;line-height:1.35}
+.canvas div b{display:block;font-size:14px;margin-bottom:2px}
+.canvas .pv{background:var(--or);color:#fff;grid-row:span 2}.canvas .sp{grid-row:span 2}
+.canvas .w2{grid-column:span 2;background:var(--orS)}.canvas .w3{grid-column:span 3;background:var(--orS)}
+.canvas .sg{background:var(--yeS)}
+@media(max-width:600px){.canvas{grid-template-columns:1fr 1fr}.canvas .pv,.canvas .sp{grid-row:auto}.canvas .w2,.canvas .w3,.canvas .pv{grid-column:1/-1}}
+.weeks{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin-top:8px}
+.weeks div{border-radius:10px;padding:10px 3px;font-size:12px;overflow-wrap:anywhere;font-weight:800;text-align:center;color:#1d1a17}
+.wk{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;font-size:12px;color:var(--mute);text-align:center}
+.vs{display:grid;gap:8px}
+.vs div{display:grid;grid-template-columns:7em minmax(0,1fr) 28px minmax(0,1fr);gap:8px;align-items:center;font-size:15px}
+.vs span{border-radius:10px;padding:8px 10px}
+.vs .a{background:var(--line)}.vs .n{background:var(--or);color:#fff;font-weight:800}.vs .ar{text-align:center;font-weight:800;color:var(--or);padding:0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--mute);font-weight:600}
+.light{display:flex;gap:12px;align-items:center;margin:12px 0 6px;font-size:16px}.light i{width:34px;height:34px;border-radius:50%;flex:none;box-shadow:0 0 0 4px var(--card)}
+.kpi{border:2px dashed var(--te);border-radius:16px;padding:6px 14px}
+.kpi div{display:grid;grid-template-columns:7em minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.kpi div:last-child{border:0}
+.kpi span:first-child{font-weight:800;color:var(--te)}
+footer{color:var(--mute);font-size:14px}
+@media(max-width:600px){table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute)}.stack td:empty{display:none}
+.spec div{grid-template-columns:1fr 1fr}.spec i{grid-column:1/-1;grid-row:2}.vs div{grid-template-columns:1fr 24px 1fr}.vs div b{grid-column:1/-1}.weeks div{font-size:11px;padding:8px 2px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script></head>
+<body>
+<header class="band hero"><div class="wrap">
+  <p class="meta">ADM1401 · Introducción a la Empresa · Universidad Anáhuac Cancún</p>
+  <h1>Repaso final: la ruta del curso en 5 estaciones</h1>
+  <p>Cada tema trae su definición, un diagrama y una explicación en palabras sencillas. Toca una estación para empezar.</p>
+  <div class="funcs" id="funcs"></div>
+  <div class="route" id="route"></div>
+  <div class="chips" id="chips"></div>
+</div></header>
+<main class="band"><div class="wrap" id="station"></div></main>
+<footer class="band"><div class="wrap">Mtra. Tania Rivera Lozano · Escuela Internacional de Negocios · Repaso final, 19 de noviembre de 2026</div></footer>
+<script>
+{
+const I={
+briefcase:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5M22 9v6"/>',
+compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+cycle:'<path d="M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3"/><path d="M18 3v4h-4M6 21v-4h4"/>',
+target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+scale:'<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>',
+org:'<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M5 16v-4h14v4"/>',
+layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+megaphone:'<path d="M3 10v4h4l7 5V5L7 10z"/><path d="M18 8a5 5 0 0 1 0 8"/>',
+flag:'<path d="M5 21V4M5 4h12l-2 4 2 4H5"/>',
+gauge:'<path d="M3 16a9 9 0 0 1 18 0"/><path d="M12 16l4-5"/><circle cx="12" cy="16" r="1.5"/>',
+tag:'<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+bars:'<path d="M4 20v-8M10 20V8M16 20V4M2 20h20"/>',
+trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+swap:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+route:'<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>',
+fish:'<path d="M2 12c4-6 12-6 16 0-4 6-12 6-16 0z"/><path d="M18 12l4-4v8z"/><circle cx="7" cy="11" r="1"/>',
+grid:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15h18M9 3v12M15 3v12M12 15v6"/>',
+chart:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+coin:'<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.8 0-3 .9-3 2s1 1.7 3 2 3 .9 3 2-1.2 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v12"/>',
+users:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><circle cx="17" cy="9" r="2.5"/><path d="M18 14c2.5.5 4 2.5 4 5"/>',
+pencil:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+building:'<path d="M4 21V5l8-3v19M12 9h8v12M2 21h20"/><path d="M7 8h2M7 12h2M7 16h2M15 13h2M15 17h2"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/>',
+puzzle:'<path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4z"/>',
+ruler:'<path d="M3 17L17 3l4 4L7 21z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+handshake:'<path d="M2 11l4-4 4 2 3-2 5 1 4 3"/><path d="M6 13l4 4c1 1 2 1 3 0l5-5M9 14l2 2M12 13l2 2"/>',
+pie:'<path d="M12 3v9h9a9 9 0 1 1-9-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/>',
+cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>'
+};
+const ic=(n,s=22)=>`<svg class="icn" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]||''}</svg>`;
+const TI={'¿Qué es administrar?':'briefcase','Escuelas':'cap','Recursos + propósito':'compass','Ciclo P-O-D-C':'cycle','Metas SMART':'target','Política vs. regla':'scale','Estructuras':'org','Organizar':'layers','Dirigir':'megaphone','Estrategia':'flag','Controlar':'gauge','6 criterios':'tag','Tamaño en México':'bars','Tendencias':'trend','Antes vs. ahora':'swap','PESTEL':'globe','5 fuerzas de Porter':'shield','Cadena de valor':'link','Ruta crítica':'route','Ishikawa':'fish','Modelo Canvas':'grid','KPI: qué es':'gauge','KPI: cómo se construye':'cog','KPI: ejemplos por área':'chart','Modelos de negocio':'coin','Proyecto integrador':'users','Antes del examen':'pencil'};
+const SI=['building','tag','search','ruler','puzzle'];
+const svg=(w,h,c)=>`<svg viewBox="0 0 ${w} ${h}" role="img">${c}</svg>`;
+const T=(x,y,t,c='tx',a='middle')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${t}</text>`;
+const arrowDef=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="fo"/></marker><marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="ft"/></marker></defs>`;
+const boxes=(a,cls='')=>`<div class="grid">${a.map((x,i)=>`<div class="box ${cls||(i%2?'t':'')}">${x[2]?`<span class="big">${x[2]}</span>`:''}<b>${x[0]}</b>${x[1]}</div>`).join('')}</div>`;
+const org=(kind)=>{let c=`<rect x="105" y="8" width="110" height="34" rx="9" class="fo"/>${T(160,30,'Dirección','tw')}`;
+  const kids=kind==='lineal'?['Gerente A','Gerente B','Gerente C']:['Finanzas','Marketing','Operaciones'];
+  c+=`<path d="M160 42V64M50 64H270M50 64V80M160 64V80M270 64V80" class="si" stroke-width="2" fill="none"/>`;
+  kids.forEach((k,i)=>{const x=50+i*110;c+=`<rect x="${x-50}" y="80" width="100" height="32" rx="9" class="fts"/>${T(x,101,k,'tx')}`});
+  if(kind==='staff')c+=`<path d="M160 52H232" class="st" stroke-width="2" stroke-dasharray="5 4"/><rect x="232" y="38" width="80" height="28" rx="9" class="fys"/>${T(272,57,'Staff','tb')}`;
+  return svg(320,118,c)};
+
+const V={
+timeline:()=>{const p=[['Antigüedad','Egipto y Roma','grandes obras'],['Rev. Industrial','Fábricas y','tareas divididas'],['Hoy','Empresas flexibles','que crean valor']];
+  return svg(480,190,`<path d="M30 70H450" class="so" stroke-width="6" stroke-linecap="round"/>${p.map((x,i)=>{const cx=70+i*170;return`<circle cx="${cx}" cy="70" r="20" class="${['fy','ft','fo'][i]}"/>${T(cx,30,x[0],'tb')}<rect x="${cx-70}" y="104" width="140" height="64" rx="12" class="fos"/>${T(cx,130,x[1])}${T(cx,152,x[2])}`}).join('')}`)},
+lenses:()=>svg(480,300,`<circle cx="240" cy="150" r="142" class="fts"/><circle cx="240" cy="168" r="100" class="fos"/><circle cx="240" cy="190" r="56" class="fo"/>
+  ${T(240,36,'Sistemas y contingencia','tb')}${T(240,56,'mira el ENTORNO','tm')}${T(240,94,'Fayol · enfoque clásico','tb')}${T(240,114,'mira la ORGANIZACIÓN','tm')}${T(240,188,'Taylor','tw')}${T(240,208,'mira la TAREA','tw')}`),
+resources:()=>{const r=['Humanos','Materiales','Financieros','Tecnológicos'];
+  return svg(480,300,arrowDef+r.map((x,i)=>`<rect x="10" y="${20+i*68}" width="130" height="50" rx="25" class="fts"/>${T(75,50+i*68,x)}`).join('')+
+  `<path d="M150 150H286" class="so" stroke-width="5" marker-end="url(#ah)"/>${T(218,138,'transforma','tb')}<circle cx="380" cy="150" r="82" class="fo"/>${T(380,146,'VALOR','tw')}${T(380,168,'con propósito','tw')}
+  ${T(218,192,'Misión · Visión','tm')}${T(218,210,'· Valores','tm')}`)},
+podc:()=>{const s=[['PLANEAR','metas y camino',240,52,'fo','tw'],['ORGANIZAR','quién y con qué',400,160,'ft','tw'],['DIRIGIR','mover al equipo',240,268,'fy','tk'],['CONTROLAR','medir y corregir',80,160,'ft','tw']];
+  return svg(480,320,arrowDef+`<circle cx="240" cy="160" r="108" fill="none" class="sl" stroke-width="18"/>
+  <path d="M318 84A108 108 0 0 1 344 124" class="so" stroke-width="4" fill="none" marker-end="url(#ah)"/><path d="M344 196A108 108 0 0 1 318 236" class="so" stroke-width="4" fill="none" marker-end="url(#ah)"/><path d="M162 236A108 108 0 0 1 136 196" class="so" stroke-width="4" fill="none" marker-end="url(#ah)"/><path d="M136 124A108 108 0 0 1 162 84" class="so" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+  ${T(240,156,'Mejora','tb')}${T(240,176,'continua ↻','tb')}`+s.map(x=>`<rect x="${x[2]-70}" y="${x[3]-30}" width="140" height="60" rx="14" class="${x[4]}"/>${T(x[2],x[3]-4,x[0],x[5])}${T(x[2],x[3]+16,x[1],x[5]).replace(/class="(\w+)"/,'class="$1" style="font-weight:600;font-size:13px"')}`).join(''))},
+smart:()=>{const l=[['S','Específica','qué'],['M','Medible','número'],['A','Alcanzable','realista'],['R','Relevante','estrategia'],['T','Temporal','fecha']];
+  return svg(480,250,l.map((x,i)=>{const X=8+i*94;return`<rect x="${X}" y="10" width="86" height="86" rx="16" class="${i%2?'ft':'fo'}"/>${T(X+43,72,x[0],'tw').replace('class="tw"','class="tw" style="font-size:46px"')}${T(X+43,122,x[1],'tb')}${T(X+43,142,x[2],'tm')}`}).join('')+
+  `<rect x="8" y="164" width="464" height="80" rx="14" class="fys"/>${T(24,190,'Reducir la espera de 25 a 12 min','tb','start')}${T(24,212,'en 6 meses, rediseñando el check-in,','tx','start')}${T(24,232,'con seguimiento semanal.','tx','start')}
+  ${T(456,190,'S · M','tm','end')}${T(456,212,'T · A','tm','end')}${T(456,232,'R','tm','end')}`)},
+rule:()=>svg(480,230,arrowDef+`<path d="M20 30H230L190 110H60Z" class="fts"/>${T(125,62,'POLÍTICA','tb')}${T(125,84,'guía amplia: deja decidir','tx')}
+  <path d="M250 70H450" class="so" stroke-width="8" marker-end="url(#ah)"/>${T(350,48,'REGLA','tb')}${T(350,104,'instrucción exacta: un solo camino','tx')}
+  ${T(125,150,'Ej.: “Compramos de forma','tm')}${T(125,168,'responsable”','tm')}${T(350,150,'Ej.: “Toda compra lleva','tm')}${T(350,168,'tres cotizaciones”','tm')}`),
+span:()=>{let c=`<rect x="190" y="10" width="100" height="36" rx="10" class="fo"/>${T(240,34,'1 jefe','tw')}`;for(let i=0;i<6;i++){const x=40+i*80;c+=`<path d="M240 46L${x} 110" class="sl" stroke-width="3"/><circle cx="${x}" cy="124" r="16" class="ft"/>`}
+  return svg(480,180,c+T(240,172,'Tramo de control = cuántas personas reportan a un jefe','tm'))},
+pyramid:()=>svg(480,290,`<path d="M240 10L330 100H150Z" class="fo"/>${T(240,78,'Corporativa','tw')}<path d="M146 108H334L414 188H66Z" class="ft"/>${T(240,148,'Negocio','tw')}${T(240,168,'cómo competir','tw').replace('class="tw"','class="tw" style="font-weight:600;font-size:13px"')}
+  <path d="M62 196H418L478 276H2Z" class="fy"/>${T(240,232,'Funcional','tk')}${T(240,252,'cómo ejecutar en cada área','tk').replace('class="tk"','class="tk" style="font-weight:600;font-size:13px"')}`),
+control:()=>{const s=['Estándar','Medir','Comparar','Corregir'];
+  return svg(480,230,arrowDef+s.map((x,i)=>{const X=10+i*120;return`<rect x="${X}" y="10" width="100" height="56" rx="14" class="${i%2?'ft':'fo'}"/>${T(X+50,44,(i+1)+'. '+x,'tw')}${i<3?`<path d="M${X+102} 38H${X+116}" class="so" stroke-width="3" marker-end="url(#ah)"/>`:''}`}).join('')+
+  `<path d="M420 70C420 110 60 110 60 72" fill="none" class="so" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#ah)"/>${T(240,112,'vuelve a empezar','tm')}
+  <path d="M30 170H450" class="st" stroke-width="5" marker-end="url(#ag)"/>${[['Preventivo','antes',70],['Concurrente','durante',240],['Retroalimentación','después',410]].map(x=>`<circle cx="${x[2]}" cy="170" r="10" class="ft"/>${T(x[2],150,x[0],'tb')}${T(x[2],200,x[1],'tm')}`).join('')}`)},
+pestel:()=>{const f=[['P','Político'],['E','Económico'],['S','Social'],['T','Tecnológico'],['E','Ecológico'],['L','Legal']];
+  const ln=f.map((x,i)=>{const a=-Math.PI/2+i*Math.PI/3;return`<path d="M${240+128*Math.cos(a)} ${165+122*Math.sin(a)}L240 165" class="sl" stroke-width="3"/>`}).join('');
+  return svg(480,330,ln+`<circle cx="240" cy="165" r="58" class="fo"/>${T(240,160,'Tu','tw')}${T(240,180,'empresa','tw')}`+f.map((x,i)=>{const a=-Math.PI/2+i*Math.PI/3,cx=240+128*Math.cos(a),cy=165+122*Math.sin(a);
+  return`<circle cx="${cx}" cy="${cy}" r="40" class="${i%2?'ft':'fy'}"/>${T(cx,cy+2,x[0],i%2?'tw':'tk').replace(/class="(\w+)"/,'class="$1" style="font-size:26px"')}${T(cx,cy+22,x[1],i%2?'tw':'tk').replace(/class="(\w+)"/,'class="$1" style="font-size:11px"')}`}).join(''))},
+chain:()=>{const p=['Logística entrada','Operaciones','Logística salida','Marketing y ventas','Servicio'],s=['Infraestructura','Gestión de personas','Tecnología','Compras'];
+  let c=`<path d="M4 4H380L470 150L380 296H4Z" class="fts"/><path d="M380 4L470 150L380 296Z" class="fo"/>${T(418,146,'MAR-','tw')}${T(418,166,'GEN','tw')}`;
+  s.forEach((x,i)=>{c+=`<rect x="12" y="${12+i*30}" width="360" height="26" rx="6" class="fc"/>${T(192,30+i*30,x,'tx')}`});
+  c+=T(192,148,'APOYO ↑ · PRIMARIAS ↓','tm');
+  p.forEach((x,i)=>{const X=12+i*72.5;c+=`<rect x="${X}" y="160" width="68" height="128" rx="8" class="fos"/>`+x.split(' ').map((w,j)=>T(X+34,200+j*18,w,'tx').replace('class="tx"','class="tx" style="font-size:12px"')).join('')});
+  return svg(474,300,c)},
+cpm:()=>{const n={I:[34,120],A:[130,120],B:[250,46],C:[250,194],D:[370,120],F:[450,120]};
+  const e=[['I','A',1],['A','B',0],['A','C',1],['B','D',0],['C','D',1],['D','F',1]];
+  let c=arrowDef+e.map(([a,b,k])=>`<path d="M${n[a][0]} ${n[a][1]}L${n[b][0]} ${n[b][1]}" class="${k?'so':'st'}" stroke-width="${k?7:3}" ${k?'':'stroke-dasharray="6 5"'}/>`).join('');
+  const lab={I:['Inicio',''],A:['A','2 días'],B:['B','2 días'],C:['C','4 días'],D:['D','3 días'],F:['Fin','']};
+  for(const k in n){const [x,y]=n[k],crit=k!=='B';c+=`<circle cx="${x}" cy="${y}" r="${k==='I'||k==='F'?28:32}" class="${k==='I'||k==='F'?'fc':crit?'fo':'fts'}" ${k==='I'||k==='F'?'stroke-width="3" style="stroke:var(--ink)"':''}/>${T(x,y+(lab[k][1]?0:6),lab[k][0],crit&&k!=='I'&&k!=='F'?'tw':'tb')}${lab[k][1]?T(x,y+18,lab[k][1],crit?'tw':'tx').replace(/class="(\w+)"/,'class="$1" style="font-size:12px;font-weight:600"'):''}`}
+  return svg(480,240,c+T(250,236,'Naranja = ruta crítica (9 días)','tm'))},
+fish:()=>{const top=[['Método','Check-in','en papel'],['Mano de obra','Poco personal','en hora pico'],['Máquina','Sistema de','reservas lento']],bot=[['Material','Formatos','incompletos'],['Medio ambiente','Llegada masiva','de vuelos'],['Medición','Nadie mide','la espera']];
+  let c=`<path d="M10 160H360" class="si" stroke-width="5"/><path d="M360 110H470V210H360Z" class="fo"/>${T(415,154,'25 min','tw')}${T(415,174,'de espera','tw')}`;
+  top.forEach((x,i)=>{const X=62+i*118;c+=`<path d="M${X} 78L${X+46} 160" class="so" stroke-width="3"/>${T(X,22,x[0],'tb')}${T(X,42,x[1],'tm')}${T(X,60,x[2],'tm')}`});
+  bot.forEach((x,i)=>{const X=62+i*118;c+=`<path d="M${X} 242L${X+46} 160" class="st" stroke-width="3"/>${T(X,264,x[0],'tb')}${T(X,284,x[1],'tm')}${T(X,302,x[2],'tm')}`});
+  return svg(480,312,c)},
+gauge:()=>{const arc=(a0,a1,c)=>{const p=a=>[240+150*Math.cos(Math.PI*(1-a)),190-150*Math.sin(Math.PI*(1-a))];const [x0,y0]=p(a0),[x1,y1]=p(a1);return`<path d="M${x0} ${y0}A150 150 0 0 1 ${x1} ${y1}" fill="none" stroke="${c}" stroke-width="34"/>`};
+  const na=.78,nx=240+120*Math.cos(Math.PI*(1-na)),ny=190-120*Math.sin(Math.PI*(1-na));
+  return svg(480,250,arc(0,.45,'#e5534b')+arc(.45,.7,'#ffc93c')+arc(.7,1,'#3fae6a')+`<path d="M240 190L${nx} ${ny}" class="si" stroke-width="7" stroke-linecap="round"/><circle cx="240" cy="190" r="12" class="fo"/>
+  ${T(240,236,'Ocupación 85 % · meta ≥ 85 %','tb')}${T(70,216,'No cumple','tm')}${T(410,216,'Cumple','tm')}`)},
+roles:()=>{const r=[['CEO','Dirección'],['COO','Operaciones'],['CFO','Finanzas'],['CMO','Marketing'],['CHRO','Personas'],['CIO','Tecnología']];
+  const ln=r.map((x,i)=>{const a=-Math.PI/2+i*Math.PI/3;return`<path d="M${240+170*Math.cos(a)} ${150+112*Math.sin(a)}L240 150" class="sl" stroke-width="3"/>`}).join('');
+  return svg(480,300,ln+`<circle cx="240" cy="150" r="60" class="fo"/>${T(240,146,'Organización','tw').replace('class="tw"','class="tw" style="font-size:14px"')}${T(240,166,'de Q. Roo','tw').replace('class="tw"','class="tw" style="font-size:14px"')}`+r.map((x,i)=>{const a=-Math.PI/2+i*Math.PI/3,cx=240+170*Math.cos(a),cy=150+112*Math.sin(a);
+  return`<rect x="${cx-52}" y="${cy-28}" width="104" height="56" rx="14" class="${i%2?'ft':'fy'}"/>${T(cx,cy-3,x[0],i%2?'tw':'tk')}${T(cx,cy+16,x[1],i%2?'tw':'tk').replace(/class="(\w+)"/,'class="$1" style="font-size:12px;font-weight:600"')}`}).join(''))}
+};
+
+const H={
+spec:()=>`<div class="spec">${[['Formal','Informal',70],['Centralizada','Descentralizada',78],['Mecanicista','Orgánica',80],['Alta','Plana',82]].map(x=>`<div><span>${x[0]}</span><i style="--p:${x[2]}%"></i><span>${x[1]}</span></div>`).join('')}</div><p class="goal" style="margin-top:12px">El punto naranja marca dónde suele ubicarse una startup típica.</p>`,
+size:()=>{const L={Industria:[10,50,250],Comercio:[10,30,100],Servicios:[10,50,100]},col={Industria:'#ffc93c',Comercio:'#7fd1db',Servicios:'#ffb38a'};
+  return`<div class="bars">${['Micro','Pequeña','Mediana'].map((s,k)=>`<div class="row">${s}<div>${Object.keys(L).map(sec=>`<span style="width:${Math.max(14,L[sec][k]/250*100)}%;background:${col[sec]}">${sec} · hasta ${L[sec][k]}</span>`).join('')}</div></div>`).join('')}</div>
+  <div class="ctl"><label>Sector<select id="sec"><option>Industria</option><option>Comercio</option><option selected>Servicios</option></select></label><label>Empleados<input type="number" id="emp" min="0" value="80"></label></div><div class="out" id="sout"></div>`},
+forces:()=>`<div class="forces"><div class="e"></div><div><b>Nuevos entrantes</b>qué tan fácil es entrar</div><div class="e"></div>
+<div><b>Proveedores</b>poder para subir precios</div><div class="c"><b>RIVALIDAD</b>competidores actuales</div><div><b>Clientes</b>poder para negociar</div>
+<div class="e"></div><div><b>Sustitutos</b>otras opciones</div><div class="e"></div></div>
+<div style="margin-top:16px">${['Nuevos entrantes','Rivalidad','Proveedores','Clientes','Sustitutos'].map((f,i)=>`<div class="force"><span>${f}</span><input type="range" min="1" max="5" value="3" data-f="${i}" aria-label="${f}"><span class="v" id="fv${i}">3</span></div>`).join('')}</div>
+<div class="meter"><i id="fm"></i></div><div class="out" id="fout"></div>`,
+canvas:()=>`<div class="canvas"><div class="sp"><b>Socios clave</b>Aliados que nos ayudan a operar</div><div><b>Actividades clave</b>Lo más importante que hacemos</div><div class="pv"><b>Propuesta de valor</b>El problema que resolvemos y por qué nos eligen</div><div><b>Relaciones</b>Cómo nos vinculamos con el cliente</div><div class="sp sg"><b>Segmentos</b>Las personas o empresas a quienes servimos</div>
+<div><b>Recursos clave</b>Lo que necesitamos para operar</div><div><b>Canales</b>Cómo llegamos al cliente</div><div class="w3"><b>Estructura de costos</b>Lo que nos cuesta operar</div><div class="w2"><b>Fuentes de ingresos</b>Cómo y cuánto nos pagan</div></div>`,
+metric:()=>`<div class="grid" style="margin-top:14px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="box t"><b>Métrica</b>Un dato que se cuenta.<small>170 huéspedes hoy</small></div><div class="box"><b>KPI</b>Un dato ligado a una meta.<small>Ocupación 85 % · meta ≥ 85 %</small></div></div>`,
+anatomy:()=>`<div class="kpi">${[['Nombre','Tiempo promedio de servicio','qué mido'],['Fórmula','Σ minutos de espera ÷ clientes','cómo lo calculo'],['Meta','≤ 12 minutos','cuánto quiero'],['Frecuencia','Semanal','cuándo lo reviso'],['Responsable','COO','quién responde']].map(x=>`<div><span>${x[0]}<small style="display:block;font-weight:600;color:var(--mute);font-size:12px">${x[2]}</small></span><span>${x[1]}</span></div>`).join('')}</div>`,
+calc:()=>`<div class="box y" style="margin-top:14px"><b>Calculadora con semáforo</b><div class="ctl" style="margin-top:6px"><label>Minutos de espera (total)<input type="number" id="km" min="0" value="1300"></label><label>Clientes atendidos<input type="number" id="kc" min="1" value="100"></label></div><div class="light" id="kout"></div><small>Verde ≤ 12 min · amarillo 12–15 · rojo más de 15</small></div>`,
+kpiEx:()=>`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))">${[
+['Operaciones','Ocupación','ocupadas ÷ disponibles × 100','≥ 85 %','día','COO'],
+['Finanzas','Margen de utilidad','utilidad ÷ ventas × 100','≥ 15 %','mes','CFO'],
+['Marketing','Tasa de conversión','ventas ÷ visitas × 100','≥ 3 %','semana','CMO'],
+['Clientes','Satisfacción','Σ calificaciones ÷ encuestas','≥ 4.5 de 5','mes','Gerente de servicio'],
+['Personas','Rotación','bajas ÷ plantilla × 100','≤ 5 %','mes','CHRO'],
+['Tecnología','Disponibilidad','horas en línea ÷ horas totales × 100','≥ 99 %','semana','CIO'],
+['Ventas','Ticket promedio','ventas ÷ número de cuentas','≥ $350','día','Gerente']].map((r,i)=>`<div class="box ${i%2?'t':''}"><small style="margin:0 0 2px">${r[0]} · ${r[5]}</small><b>${r[1]}</b><span style="display:block;font-size:14px">${r[2]}</span><span style="display:inline-block;margin-top:6px;background:var(--card);border-radius:99px;padding:2px 10px;font-weight:800;font-size:14px;white-space:nowrap">Meta ${r[3]} · cada ${r[4]}</span></div>`).join('')}</div>`,
+weeks:()=>`<div class="wk">${[1,2,3,4,5,6,7,8].map(i=>`<span>S${i}</span>`).join('')}</div><div class="weeks"><div style="background:#ffc93c">Elegir</div><div style="background:#7fd1db;grid-column:span 3">Diagnosticar</div><div style="background:#ffb38a;grid-column:span 3">Diseñar y proponer</div><div style="background:#f25c05;color:#fff;font-size:10px">Exponer</div></div>`,
+vs:()=>`<div class="vs">${[['Estructura','Jerárquica','Red / plana'],['Decisiones','Centralizadas','Distribuidas'],['Trabajo','Presencial','Híbrido'],['Cliente','Receptor','Cocreador'],['Meta','Eficiencia','Valor sostenible'],['Competencia','Local','Ecosistemas'],['Liderazgo','Mando','Facilitación']].map(r=>`<div><b>${r[0]}</b><span class="a">${r[1]}</span><span class="ar">→</span><span class="n">${r[2]}</span></div>`).join('')}</div><p class="goal" style="margin-top:10px">Gris = siglo XX · Naranja = siglo XXI</p>`
+};
+
+// topic: [tab, definition, visual(html), explanation(html), example, remember]
+const S=[
+{id:'comprender',n:1,name:'Fundamentos',verb:'Comprender',goal:'Cómo evolucionó la administración, el ciclo P-O-D-C y las estructuras.',topics:[
+['¿Qué es administrar?','Administrar es organizar personas y recursos para lograr una meta.',V.timeline(),
+ '<p>Desde siempre, cualquier obra grande necesitó a alguien que coordinara: los acueductos romanos, las fábricas de la Revolución Industrial y hoy las empresas flexibles.</p><p>Lo que cambia son las herramientas (antes papel y capataces, hoy datos y tecnología). El objetivo sigue siendo el mismo.</p>','Un acueducto romano y una cadena hotelera de Cancún tienen lo mismo en el fondo: muchas personas y recursos coordinados hacia una meta.','Cambian las herramientas; la meta de coordinar no cambia.'],
+['Escuelas','Las escuelas de la administración son distintas formas de pensar cómo trabajar mejor. Cada una mira un nivel distinto.',V.lenses(),
+ '<ul><li><b>Taylor (administración científica):</b> mide tiempos y movimientos para que cada tarea se haga más rápido.</li><li><b>Fayol (enfoque clásico):</b> ordena funciones, jefes y principios para dirigir toda la organización.</li><li><b>Sistemas y contingencia:</b> la empresa es un sistema abierto que se adapta a su entorno; no hay una sola forma correcta.</li></ul>','En un hotel: Taylor cronometra cuánto tarda limpiar una habitación; Fayol define quién reporta a quién; sistemas ajusta la operación cuando llega una temporada de huracanes.','No se reemplazan, se suman: tarea → organización → entorno.'],
+['Recursos + propósito','La empresa transforma sus recursos en valor. La misión, la visión y los valores le dan dirección.',V.resources(),
+ '<p>Los <b>recursos</b> son lo que la empresa tiene: personas, materiales, dinero y tecnología.</p><ul><li><b>Misión:</b> qué hacemos y para quién (el presente).</li><li><b>Visión:</b> a dónde queremos llegar (el futuro).</li><li><b>Valores:</b> cómo nos comportamos mientras lo logramos.</li></ul>','Una cafetería tiene baristas, café, caja y una cafetera (recursos); su misión es dar el mejor café de la zona a estudiantes.','Sin misión, visión y valores, los recursos no tienen dirección.'],
+['Ciclo P-O-D-C','El proceso administrativo es un ciclo de cuatro pasos: planear, organizar, dirigir y controlar.',V.podc(),
+ '<ul><li><b>Planear:</b> decidir qué queremos lograr y cómo.</li><li><b>Organizar:</b> repartir tareas, puestos y recursos.</li><li><b>Dirigir:</b> movilizar al equipo con liderazgo y comunicación.</li><li><b>Controlar:</b> medir si lo logramos y corregir.</li></ul><p>Es un círculo: lo que aprendes al controlar alimenta la siguiente planeación. A eso se le llama mejora continua.</p>','Organizar un evento: planeas fecha y meta, asignas comisiones, coordinas al equipo el día del evento y al final revisas qué salió bien y qué no.','Decidir → estructurar → movilizar → aprender, y volver a empezar.'],
+['Metas SMART','Una meta SMART es una meta clara que se puede medir y tiene fecha límite.',V.smart(),
+ '<p>Cada letra es un requisito:</p><ul><li><b>S · Específica:</b> dice exactamente qué se busca.</li><li><b>M · Medible:</b> tiene un número para saber si se cumplió.</li><li><b>A · Alcanzable:</b> es realista con los recursos que hay.</li><li><b>R · Relevante:</b> aporta a la estrategia de la empresa.</li><li><b>T · Temporal:</b> tiene fecha límite.</li></ul>','“Mejorar el servicio” no es SMART. “Reducir la espera de 25 a 12 minutos en 6 meses” sí lo es.','Si no tiene número y fecha, todavía no es una meta SMART.'],
+['Política vs. regla','Una política es una guía general para decidir; una regla es una instrucción exacta que no deja margen.',V.rule(),
+ '<p>La <b>política</b> marca un criterio y confía en el juicio de las personas. La <b>regla</b> dice exactamente qué hacer, siempre igual.</p><p>Además, toda empresa en México debe cumplir un <b>marco normativo</b>: laboral, fiscal, NOM-035 (riesgos psicosociales en el trabajo), sanitario, ambiental, protección civil y licencias.</p>','Política: “compramos de forma responsable”. Regla: “toda compra requiere tres cotizaciones”.','Política = carretera ancha · Regla = carril único.'],
+['Estructuras','La estructura organizacional define quién manda a quién y cómo se agrupa el trabajo.',
+ `<div style="display:grid;gap:18px">${[['Lineal','lineal','Un solo jefe por persona'],['Funcional','funcional','Áreas por especialidad'],['Línea + staff','staff','El staff asesora (línea punteada)']].map((x,i)=>`<div class="box ${i%2?'t':''}"><b>${x[0]}</b><small style="margin:0 0 8px">${x[2]}</small>${org(x[1])}</div>`).join('')}</div>`,
+ '<ul><li><b>Lineal:</b> cada persona tiene un solo jefe. Mando claro.</li><li><b>Funcional:</b> áreas por especialidad (finanzas, marketing, operaciones).</li><li><b>Línea + staff:</b> la línea decide; el staff asesora sin mandar.</li></ul><p><b>Flexibles:</b> <b>matricial</b> (dos jefes: proyecto y área), <b>divisional</b> (una división por producto o zona), <b>en red</b> (socios que colaboran) y <b>plana</b> (pocos jefes, decisiones rápidas). Cada una gana agilidad a cambio de un reto de coordinación.</p>','El organigrama lo dibuja de tres formas: vertical (jerarquía), horizontal (flujo) o circular (el centro coordina y los anillos son niveles).','La estructura se elige según lo que la empresa necesita, no por moda.'],
+['Organizar','Organizar es convertir muchas tareas sueltas en un equipo ordenado, en cinco pasos.',
+ boxes([['Dividir','el trabajo en tareas','1'],['Jerarquizar','niveles de autoridad','2'],['Departamentalizar','tareas en áreas','3'],['Describir puestos','funciones y requisitos','4'],['Coordinar','sincronizar las áreas','5']])+`<div style="margin-top:14px">${V.span()}</div>`,
+ '<p>Primero se separa el trabajo, luego se decide quién tiene autoridad, se agrupan las tareas en áreas, se escribe qué hace cada puesto y al final se coordina todo.</p><p>El <b>tramo de control</b> es cuántas personas tiene a su cargo un jefe. Si es demasiado grande y no hay sistemas claros, el jefe se satura.</p>'+'<h4 style="margin:14px 0 8px;color:var(--te)">Cada empresa elige un punto entre dos extremos</h4>'+H.spec(),'Un gerente con 25 personas y sin procesos claros no alcanza a supervisar: conviene dividir el equipo o crear líderes intermedios.','Dividir → jerarquizar → agrupar → describir → coordinar.'],
+['Dirigir','Dirigir es lograr que las cosas pasen a través de las personas.',
+ boxes([['Liderazgo','Inspirar al equipo.'],['Motivación','Dar ganas de hacerlo.'],['Comunicación','Que todos entiendan igual.'],['Decisiones','Escoger con datos.']]),
+ '<p>Dirigir usa cuatro habilidades al mismo tiempo. Sin liderazgo nadie sigue la meta; sin motivación no hay energía; sin comunicación cada quien entiende algo distinto; sin decisiones con datos se elige a ciegas.</p>','Liderazgo: el gerente comparte la meta del trimestre. Motivación: reconoce logros cada semana. Comunicación: junta de 10 minutos al iniciar el turno. Decisiones: elige proveedor por costo y calidad.','Dirigir = mover al equipo, no solo dar órdenes.'],
+['Estrategia','La estrategia es el plan para competir. Se decide en tres niveles, de lo general a lo concreto.',V.pyramid(),
+ '<ul><li><b>Corporativa:</b> en qué negocios estar.</li><li><b>De negocio:</b> cómo competir en cada uno.</li><li><b>Funcional:</b> cómo ejecuta cada área (marketing, finanzas, operaciones).</li></ul><p>En el nivel de negocio, Porter propone tres <b>estrategias genéricas</b>:</p>'+boxes([['Costos','Vender más barato que todos.'],['Diferenciación','Ofrecer algo único.'],['Enfoque','Atender muy bien a un grupo.']]),'Una aerolínea de bajo costo compite por costos; un hotel boutique, por diferenciación; un spa solo para novias, por enfoque.','Arriba se decide dónde competir; abajo, cómo hacerlo.'],
+['Controlar','Controlar es comparar lo planeado con lo logrado y corregir a tiempo.',V.control(),
+ '<p>Cuatro pasos: fijar el estándar, medir, comparar y corregir.</p><p>Se puede controlar en tres momentos: <b>preventivo</b> (antes, revisando insumos), <b>concurrente</b> (durante, supervisando en tiempo real) y <b>de retroalimentación</b> (después, analizando quejas y resultados).</p><p><b>Herramientas según lo que necesitas:</b> procesos → PHVA, Seis Sigma, ISO 9001 · estrategia → tablero de KPI · recursos → presupuesto, auditoría.</p>','Un restaurante revisa la frescura del pescado al recibirlo (preventivo), prueba los platillos al salir (concurrente) y lee las reseñas del mes (retroalimentación).','Mientras antes controlas, más barato es corregir.']]},
+{id:'clasificar',n:2,name:'La empresa hoy',verb:'Clasificar',goal:'Clasificar una empresa con 6 criterios, ubicar su tamaño y reconocer las tendencias.',topics:[
+['6 criterios','Clasificar una empresa es describirla con seis criterios: giro, capital, tamaño, forma jurídica, fin y ámbito.',
+ boxes([['Giro','Industria · comercio · servicios'],['Capital','Público · privado · mixto'],['Tamaño','Micro · pequeña · mediana · grande'],['Forma jurídica','Persona física · sociedad'],['Fin','Lucrativa · social'],['Ámbito','Local · nacional · global']]),
+ '<p>Cada criterio responde a algo distinto: a qué se dedica, de quién es el dinero, qué tan grande es, cómo está constituida legalmente, si busca ganancias y hasta dónde llega.</p>','Un hotel en Cancún: servicios · privado · grande · sociedad · lucrativa · global.','Seis etiquetas describen cualquier empresa.'],
+['Tamaño en México','El tamaño oficial de una empresa en México depende de su sector y su número de empleados.',H.size(),
+ '<ul><li><b>Micro:</b> hasta 10 empleados en cualquier sector.</li><li><b>Pequeña:</b> 11–50 en industria y servicios; 11–30 en comercio.</li><li><b>Mediana:</b> 51–250 en industria; 31–100 en comercio; 51–100 en servicios.</li><li><b>Grande:</b> supera los rangos de mediana.</li></ul><p>Fuente: DOF, 30 de junio de 2009.</p>','Con 45 empleados, una tienda (comercio) ya es mediana, pero un despacho (servicios) sigue siendo pequeño.','El criterio oficial combina personal y ventas anuales; no basta contar empleados.'],
+['Tendencias','Las tendencias son los cambios que están transformando a las empresas hoy.',
+ boxes([['Transformación digital',''],['Sostenibilidad + ESG',''],['Trabajo flexible',''],['Innovación + startups',''],['Cliente al centro',''],['Globalización + redes','']],'y'),
+ '<p>Tres pesan especialmente, y cada una trae un reto:</p><ul><li><b>Digital:</b> automatización, datos e IA. Reto: aprender a usarla y protegerse.</li><li><b>Sostenible:</b> cuidar planeta, personas y ética. Reto: medir resultados reales.</li><li><b>Flexible:</b> trabajo en casa y en oficina. Reto: mantener unido al equipo.</li></ul><p>Hoy también se crece <b>con otros</b>: plataformas, startups, alianzas y relocalización (nearshoring, clave para México por su cercanía con EUA).</p>','Una plataforma de hospedaje conecta anfitriones y viajeros: su reto es generar confianza entre desconocidos.','Cada tendencia es una oportunidad con un reto concreto.'],
+['Antes vs. ahora','La empresa pasó de mandar desde arriba a colaborar y adaptarse.',H.vs(),
+ '<p>En el siglo XX la empresa era jerárquica, presencial y buscaba eficiencia. En el siglo XXI es más plana, híbrida y busca valor sostenible.</p><p>El cliente dejó de ser solo receptor: ahora participa en crear el producto (cocreador). Y el líder ya no solo manda: facilita.</p>','Una app que cambia sus funciones según los comentarios de sus usuarios trata al cliente como cocreador.','De mando a facilitación; de receptor a cocreador.']]},
+{id:'analizar',n:3,name:'Análisis del entorno',verb:'Analizar',goal:'Leer el entorno con PESTEL, medir el atractivo con 5 fuerzas y ubicar dónde se crea el margen.',topics:[
+['PESTEL','PESTEL es una herramienta para analizar los seis factores externos que afectan a una empresa.',V.pestel(),
+ '<ul><li><b>Político:</b> lo que decide el gobierno.</li><li><b>Económico:</b> cómo se mueve el dinero.</li><li><b>Social:</b> cómo cambia la gente.</li><li><b>Tecnológico:</b> la tecnología que irrumpe.</li><li><b>Ecológico:</b> riesgos naturales y ambientales.</li><li><b>Legal:</b> lo que exige la ley.</li></ul><p>Son factores que la empresa <b>no controla</b>, pero debe vigilar.</p>','En Quintana Roo: política turística (P), tipo de cambio (E), movilidad laboral (S), plataformas de viaje (T), sargazo y huracanes (E), normas y licencias (L).','PESTEL mira hacia afuera de la empresa.'],
+['5 fuerzas de Porter','Las 5 fuerzas de Porter miden qué tan atractivo es un sector según cinco presiones competitivas.',H.forces(),
+ '<p>En el centro está la <b>rivalidad</b> entre competidores. A su alrededor presionan:</p><ul><li><b>Nuevos entrantes:</b> qué tan fácil es que llegue alguien más.</li><li><b>Proveedores:</b> su poder para subir precios.</li><li><b>Clientes:</b> su poder para negociar.</li><li><b>Sustitutos:</b> otras opciones que resuelven lo mismo.</li></ul><p>Cada fuerza se califica del 1 (baja) al 5 (alta). Mueve los controles para ver el resultado.</p>','En hotelería de Cancún la rivalidad es alta (muchos hoteles) y los sustitutos también (rentas vacacionales).','Más presión = sector menos atractivo. Cada calificación necesita un dato que la respalde.'],
+['Cadena de valor','La cadena de valor muestra las actividades con las que una empresa crea valor; el margen es lo que sobra después de todas ellas.',V.chain(),
+ '<p>Hay dos tipos de actividades:</p><ul><li><b>Primarias</b> (abajo): el recorrido del producto, desde que entran los insumos hasta el servicio posventa.</li><li><b>De apoyo</b> (arriba): infraestructura, gestión de personas, tecnología y compras. Cruzan todas las primarias.</li></ul><p>El <b>margen</b> es la diferencia entre lo que el cliente paga y lo que cuesta todo el proceso.</p>','En un hotel: recibir insumos (logística de entrada), atender huéspedes (operaciones), vender paquetes (marketing) y dar seguimiento tras la estancia (servicio).','Busca la actividad donde creas más valor que tu competencia.']]},
+{id:'disenar',n:4,name:'Operación, diseño y medición',verb:'Diseñar y medir',goal:'Calcular una ruta crítica, encontrar causas con Ishikawa, diseñar con Canvas y medir con KPI.',topics:[
+['Ruta crítica','La ruta crítica es la secuencia de actividades más larga de un proyecto; marca cuánto dura en total.',V.cpm(),
+ '<p>Se suman las duraciones de cada camino:</p><ul><li><b>A–C–D:</b> 2 + 4 + 3 = <b>9 días</b> → ruta crítica.</li><li><b>A–B–D:</b> 2 + 2 + 3 = 7 días.</li></ul><p>La <b>holgura</b> es el tiempo que una actividad puede retrasarse sin afectar el final: 9 − 7 = <b>2 días</b> para B.</p>','Si C se retrasa un día, todo el proyecto se retrasa un día. Si B se retrasa un día, no pasa nada.','Las actividades críticas tienen holgura cero.'],
+['Ishikawa','El diagrama de Ishikawa (o de espina de pescado) organiza las posibles causas de un problema.',V.fish(),
+ '<p>El problema va en la “cabeza”. Las causas se agrupan en seis espinas, las <b>6M</b>: método, mano de obra, máquina, material, medio ambiente y medición.</p><p>Sirve para pensar en todas las causas antes de elegir una solución.</p>','¿Por qué el check-in tarda 25 minutos? Papel (método), poco personal (mano de obra), sistema lento (máquina), formatos incompletos (material), vuelos masivos (medio ambiente) y nadie mide la espera (medición).','Cada espina es una causa posible, no confirmada.'],
+['Modelo Canvas','El Modelo Canvas resume toda una idea de negocio en una sola hoja de nueve bloques.',H.canvas(),
+ '<p>A la derecha está el <b>cliente</b> (segmentos, relaciones, canales); a la izquierda, la <b>operación</b> (socios, actividades, recursos). En el centro, la <b>propuesta de valor</b> une ambos lados.</p><p>Abajo se ve el dinero: <b>costos</b> e <b>ingresos</b>.</p>','Una app de reservas de tours: segmento = turistas; propuesta = reservar en un clic; ingresos = comisión por reserva.','Llena primero segmentos y propuesta de valor; después el resto.'],
+['KPI: qué es','Un KPI (del inglés Key Performance Indicator, indicador clave de desempeño) es un número que te dice, de un vistazo, si vas bien o mal hacia una meta importante.',V.gauge()+H.metric(),
+ '<p>Piensa en el <b>tablero de un coche</b>. Mientras manejas no revisas todo: solo miras unos pocos indicadores (velocidad, gasolina, temperatura) porque son los que te dicen si llegarás bien. Una empresa hace lo mismo con sus KPI.</p><p><b>Métrica y KPI no son lo mismo.</b> Una métrica es cualquier dato que se puede contar. Un KPI es una métrica <b>elegida</b> porque está ligada a una meta de la estrategia y tiene un valor objetivo.</p><ul><li><b>“Clave”</b> significa que son pocos: normalmente de 3 a 7 por área.</li><li><b>“Desempeño”</b> significa que miden resultados, no actividad.</li><li>Todo KPI es una métrica, pero no toda métrica es un KPI.</li></ul>','“Hoy llegaron 170 huéspedes” es una métrica. “Ocupación de 85 % contra una meta de 85 %” es un KPI: dice si vamos bien.','Si un número no está ligado a una meta, es solo un dato, no un KPI.'],
+['KPI: cómo se construye','Construir un KPI es convertir una meta en un número que se calcula siempre igual, con un valor objetivo, una fecha de revisión y una persona responsable.',H.anatomy()+H.calc(),
+ '<p>Un KPI completo responde cinco preguntas. Si le falta una, no sirve:</p><ul><li><b>Nombre · qué mido:</b> claro y corto. Ej.: tiempo promedio de servicio.</li><li><b>Fórmula · cómo lo calculo:</b> la operación exacta, para que todos obtengan el mismo número.</li><li><b>Meta · cuánto quiero:</b> el valor que significa “vamos bien”.</li><li><b>Frecuencia · cuándo lo reviso:</b> diario, semanal, mensual.</li><li><b>Responsable · quién responde:</b> una persona o un puesto, no “todos”.</li></ul><p>Se suele agregar un <b>semáforo</b>: verde (cumple), amarillo (cerca, hay que vigilar) y rojo (no cumple, hay que actuar).</p><p><b>Paso a paso:</b> parte de tu meta SMART → elige qué número demuestra que la logras → escribe la fórmula → pon la meta y los rangos del semáforo → define cada cuándo y quién.</p>','Meta SMART del hotel: bajar la espera de 25 a 12 minutos en 6 meses. KPI: tiempo promedio de servicio = minutos de espera ÷ clientes atendidos; meta ≤ 12 min; semanal; responsable: COO. Mueve los números de la calculadora para ver el semáforo.','Errores comunes: medir demasiadas cosas, no poner meta, no poner responsable o no revisarlo nunca.'],
+['KPI: ejemplos por área','Cada área de la empresa tiene sus propios KPI, según lo que necesita lograr.',H.kpiEx(),
+ '<p>Fíjate que todos siguen la misma lógica: una <b>fórmula</b> sencilla (casi siempre una división), una <b>meta</b> concreta, una <b>frecuencia</b> y un <b>responsable</b>.</p><p>Muchos KPI son <b>porcentajes</b>: se divide la parte entre el total y se multiplica por 100.</p><p><b>Ejemplo resuelto · ocupación hotelera:</b></p><ul><li>Habitaciones disponibles: 200</li><li>Habitaciones ocupadas: 170</li><li>170 ÷ 200 × 100 = <b>85 %</b></li><li>Meta ≥ 85 % → <b style="color:#1d7a46">verde</b>, se cumple.</li></ul>','En el Proyecto Integrador, cada rol elige sus KPI: el CFO mide el margen; el CMO, la conversión; el CHRO, la rotación.','Un buen KPI se calcula con datos que la empresa sí tiene.'],
+['Modelos de negocio','Un modelo de negocio explica cómo gana dinero una empresa.',
+ boxes([['Suscripción','Pago recurrente.<small>Streaming, gimnasios</small>'],['Freemium','Base gratis + premium.<small>Apps de productividad</small>'],['Marketplace','Comisión por encuentro.<small>Plataformas de hospedaje</small>'],['Franquicia','Marca + sistema replicable.<small>Cadenas de comida</small>'],['Cebo y anzuelo','Entrada baja + reposición.<small>Impresoras y cartuchos</small>'],['Publicidad','Audiencia monetizada.<small>Redes sociales, medios</small>']]),
+ '<p>Dos empresas pueden vender algo parecido y ganar dinero de forma muy distinta. Unas cobran cada mes (suscripción), otras regalan lo básico y cobran lo extra (freemium), otras cobran por conectar a dos partes (marketplace).</p>','Una impresora barata con cartuchos caros es “cebo y anzuelo”: se gana en la reposición.','El modelo de negocio es el “cómo cobramos”.']]},
+{id:'integrar',n:5,name:'Integración',verb:'Integrar',goal:'Conectar cada herramienta con el proyecto y presentar con evidencia.',topics:[
+['Proyecto integrador','El proyecto integrador es el análisis que hace un equipo de una organización real de Quintana Roo.',V.roles(),
+ '<p>Cada integrante asume un rol directivo: CEO (dirección), COO (operaciones), CFO (finanzas), CMO (marketing), CHRO (personas) y CIO (tecnología).</p><p><b>Ruta de 8 semanas:</b></p>'+H.weeks()+'<p style="margin-top:12px"><b>Diagnóstico:</b> PESTEL, 5 fuerzas, cadena de valor. <b>Propuesta:</b> Canvas, Ishikawa, KPI, ruta crítica.</p>','Cada herramienta del repaso alimenta una etapa del proyecto.','Diagnosticar primero, proponer después.'],
+['Antes del examen','Para el examen, lo importante es entender la idea de cada herramienta, no memorizarla.',
+ boxes([['Repasa','Explica cada herramienta con un ejemplo de Quintana Roo.','1'],['Practica','Aplica PESTEL y 5 fuerzas a la organización de tu proyecto.','2'],['Conecta','Di qué decisión apoya cada herramienta en tu propuesta.','3']]),
+ '<p>Si puedes explicar una herramienta con un ejemplo propio, la entendiste. Si además puedes decir qué decisión ayuda a tomar, la dominas.</p>','“PESTEL me mostró el riesgo del sargazo; por eso el KPI de ocupación se revisa semanalmente en temporada alta.”','Expón con evidencia. Conecta cada herramienta. ¡Éxito!']]}];
+
+document.getElementById('funcs').innerHTML=[['flag','Dirección'],['cog','Operaciones'],['pie','Finanzas'],['megaphone','Marketing'],['users','Personas'],['chart','Indicadores'],['handshake','Alianzas']].map(x=>`<span>${ic(x[0],20)}${x[1]}</span>`).join('');
+let cur=0,tab=0;
+const route=document.getElementById('route'),chips=document.getElementById('chips'),st=document.getElementById('station');
+const xs=[90,330,570,810,1050],ys=[180,100,180,100,180],d='M'+xs.map((x,i)=>x+' '+ys[i]).join(' L');
+route.innerHTML=`<svg viewBox="0 0 1140 290" role="group" aria-label="Mapa de ruta del curso"><path d="${d}" fill="none" stroke="#1d1a17" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/><path d="${d}" fill="none" stroke="#ffc93c" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
+${S.map((s,i)=>`<g class="stn" data-i="${i}" tabindex="0" role="button" aria-label="Estación ${s.n}: ${s.name}"><circle cx="${xs[i]}" cy="${ys[i]}" r="32"/><g transform="translate(${xs[i]-16} ${ys[i]-16}) scale(1.34)" fill="none" stroke="#1d1a17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[SI[i]]}</g><text x="${xs[i]}" y="${ys[i]+(ys[i]>140?64:-66)}" text-anchor="middle">${s.n} · ${s.verb}</text><text class="s" x="${xs[i]}" y="${ys[i]+(ys[i]>140?86:-46)}" text-anchor="middle">${s.name}</text></g>`).join('')}</svg>`;
+chips.innerHTML=S.map((s,i)=>`<button data-i="${i}">${ic(SI[i],18)} ${s.n} · ${s.verb}</button>`).join('');
+
+function render(){
+  const s=S[cur],t=s.topics[tab];
+  route.querySelectorAll('.stn').forEach((g,i)=>g.classList.toggle('on',i===cur));
+  chips.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===cur));
+  st.innerHTML=`<div class="st-head"><span class="num">${ic(SI[cur],30)}</span><div><h2>${s.n} · ${s.verb}: ${s.name}</h2><p class="goal">En esta estación: ${s.goal}</p></div></div>
+  <div class="tabs" role="tablist">${s.topics.map((x,i)=>`<button role="tab" aria-selected="${i===tab}" class="${i===tab?'on':''}" data-t="${i}">${ic(TI[x[0]],18)}${x[0]}</button>`).join('')}</div>
+  <div class="panel"><div class="def"><span class="ic">${ic(TI[t[0]],26)}</span><div><small>Definición · ${t[0]}</small><p>${t[1]}</p></div></div>
+  <div class="body"><div class="vis">${t[2]}</div><div class="exp"><h4>Explicación</h4>${t[3]}<div class="ex"><b>Ejemplo</b>${t[4]}</div><div class="tip"><b>Recuerda</b>${t[5]}</div></div></div></div>`;
+  if(st.querySelector('#sec'))size();if(st.querySelector('[data-f]'))forces();if(st.querySelector('#km'))kcalc();
+  try{localStorage.setItem('adm1401v2',cur+','+tab)}catch(e){}
+}
+function go(i){cur=i;tab=0;render();location.hash=S[i].id}
+route.addEventListener('click',e=>{const g=e.target.closest('.stn');if(g)go(+g.dataset.i)});
+route.addEventListener('keydown',e=>{const g=e.target.closest('.stn');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();go(+g.dataset.i)}});
+chips.addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i)});
+st.addEventListener('click',e=>{
+  const t=e.target.closest('[data-t]');if(t){tab=+t.dataset.t;render();return}
+});
+st.addEventListener('input',e=>{if(e.target.id==='sec'||e.target.id==='emp')size();if(e.target.dataset.f!==undefined)forces();if(e.target.id==='km'||e.target.id==='kc')kcalc()});
+function kcalc(){const m=Math.max(0,+document.getElementById('km').value||0),c=Math.max(1,+document.getElementById('kc').value||1),v=m/c;
+  const [col,txt]=v<=12?['#3fae6a','Verde: cumple la meta']:v<=15?['#ffc93c','Amarillo: cerca, hay que vigilar']:['#e5534b','Rojo: no cumple, hay que actuar'];
+  document.getElementById('kout').innerHTML=`<i style="background:${col}"></i><span>${m} ÷ ${c} = <b>${v.toFixed(1)} min</b><br>${txt}</span>`}
+function size(){const L={Industria:[10,50,250],Comercio:[10,30,100],Servicios:[10,50,100]},sec=document.getElementById('sec').value,n=Math.max(0,+document.getElementById('emp').value||0),l=L[sec];
+  const r=n<=l[0]?'Micro':n<=l[1]?'Pequeña':n<=l[2]?'Mediana':'Grande';
+  document.getElementById('sout').innerHTML=`Una empresa de <b>${sec.toLowerCase()}</b> con <b>${n}</b> empleados es <b style="color:var(--or)">${r}</b> por personal.`}
+function forces(){const v=[...st.querySelectorAll('[data-f]')].map(r=>+r.value);v.forEach((x,i)=>document.getElementById('fv'+i).textContent=x);
+  const avg=v.reduce((a,b)=>a+b,0)/5;document.getElementById('fm').style.width=((avg-1)/4*100)+'%';
+  const msg=avg>=3.7?'presión alta: sector poco atractivo.':avg>=2.4?'presión media: atractivo moderado.':'presión baja: sector atractivo.';
+  document.getElementById('fout').innerHTML=`Presión promedio <b>${avg.toFixed(1)}</b> de 5 · ${msg}`}
+
+const hi=S.findIndex(s=>s.id===location.hash.slice(1));
+if(hi>=0)cur=hi;else{try{const m=(localStorage.getItem('adm1401v2')||'').split(',');if(S[+m[0]]&&S[+m[0]].topics[+m[1]]){cur=+m[0];tab=+m[1]}}catch(e){}}
+render();
+window.addEventListener('hashchange',()=>{const i=S.findIndex(s=>s.id===location.hash.slice(1));if(i>=0&&i!==cur){cur=i;tab=0;render()}});
+}
+</script>
+</body>
+</html>
